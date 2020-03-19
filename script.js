@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				});
 		});
 
-		getData(citiesApiLocal, (data => {
+		getData(proxy + citiesApi, (data => {
 				city = JSON.parse(data).filter((item) => {
 						console.log(item);
 						return item.name;
