@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				dropdownСitiesFrom = formSearch.querySelector('.dropdown__cities-from'),
 				inputDateDepart = formSearch.querySelector('.input__date-depart'),
 				cheapestTicket = document.getElementById('cheapest-ticket'),
+				modal = document.querySelector('.modal'),
+				modaBtnlOk = document.querySelector('.modal-ok'),
 				otherCheapTickets = document.getElementById('other-cheap-tickets');
 				
 			// http://api.travelpayouts.com/data/ru/cities.json
@@ -28,8 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
 		// 'Челябинск', 'Керчь', 'Волгоград', 'Самара', 'Днепропетровск',
 		// 'Екатеринбург', 'Одесса', 'Ухань', 'Шымкен', 'Нижний Новгорог',
 		// 'Калининград', 'Вроцлав', 'Ростов-на-дону'];
-
-
+		
+		const showModal = (message) => {			
+			modal.style.display = "block";
+			let modalBodyContent = modal.querySelector('.modal-body-content');
+			modalBodyContent.textContent = '';
+			modalBodyContent.insertAdjacentHTML('beforeend', message);
+		};
+		modal.addEventListener('click', (event) => {
+			let target = event.target;
+			if (target.classList.contains('modal-overlay')) {
+				modal.style.display = "none";
+			}
+		});
+		modaBtnlOk.addEventListener('click', () => {
+			modal.style.display = "none";
+		});
+		
 		const getData = (url, callback, reject = console.error) => {
 		
 				const request = new XMLHttpRequest();
@@ -218,11 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
 					getData(calendar + requestData, (response) => {
 						renderCheap(response, formData.when);
 					}, (error) => {
-						alert('В этом направлении нет рейсов');
+						showModal('В этом направлении нет рейсов');
 						console.error('Ошибка ', error);
 					});
 				} else {
-					alert('Введите корректное название города')
+					showModal('Введите корректное название города');
 				}
 								
 		});
